@@ -2,11 +2,14 @@ enablePlugins(MdocPlugin)
 
 name := "adelmo"
 
+validateCommands -= "coverage"
+
 lazy val jsProjects = Seq(client)
 
 lazy val client = project
   .settings(
     persistLauncher := true,
+    persistLauncher in Test := false,
     libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.2"
   )
   .enablePlugins(MdocPlugin)
