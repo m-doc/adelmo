@@ -2,17 +2,22 @@ enablePlugins(MdocPlugin)
 
 name := "adelmo"
 
-libraryDependencies ++= Seq(
-)
+lazy val jsProjects = Seq(client)
 
-// sbt-native-packager
-enablePlugins(JavaServerAppPackaging)
-maintainer := "m-doc <info@m-doc.org>"
-packageSummary := description.value
-packageDescription := s"See <${homepage.value.getOrElse("")}> for more information."
+lazy val client = project
+  .settings(
+    persistLauncher := true,
+    libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.2"
+  )
+  .enablePlugins(MdocPlugin)
+  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(ScalaJSPlay)
 
-// deb settings
-enablePlugins(DebianPlugin)
-serverLoading in Debian := com.typesafe.sbt.packager.archetypes.ServerLoader.SystemV
-
-validateCommands += "debian:packageBin"
+lazy val server = project
+  .settings(
+    scalaJSProjects := jsProjects,
+    libraryDependencies += "com.vmunier" %% "play-scalajs-scripts" % "0.4.0"
+  )
+  .enablePlugins(MdocPlugin)
+  .enablePlugins(PlayScala)
+  .aggregate(jsProjects.map(sbt.Project.projectToRef): _*)
