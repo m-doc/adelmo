@@ -23,7 +23,7 @@ lazy val server = project
   .enablePlugins(PlayScala)
   .aggregate(client)
   .settings(
-    name := "adelmo-server",
+    name := "adelmo",
     scalaJSProjects += client,
     libraryDependencies ++= Seq(
       ws,
@@ -34,3 +34,6 @@ lazy val server = project
     ),
     maintainer := "m-doc <info@m-doc.org>"
   )
+
+// loads the Play project at sbt startup
+onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value
