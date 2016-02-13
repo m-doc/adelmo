@@ -1,25 +1,19 @@
 package controllers
 
-import org.mdoc.common.model.Format.{ Odt, Pdf, Html }
+import io.circe.generic.auto._
+import io.circe.syntax._
+import org.mdoc.common.model._
+import org.mdoc.common.model.circe._
+import org.mdoc.common.model.Format.{ Html, Pdf }
 import org.mdoc.common.model.RenderingEngine.LibreOffice
 import play.api.data._
 import play.api.data.Forms._
+import play.api.i18n.Messages.Implicits._
 import play.api.libs.ws.ning.NingWSClient
 import play.api.mvc._
-import play.api.i18n.Messages.Implicits._
 import play.api.Play.current
-import org.mdoc.common.model._
-import scodec.bits.ByteVector
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
-import scala.concurrent.{ Await, Future }
 import scala.concurrent.ExecutionContext.Implicits.global
-import play.api.mvc._
-import play.api.libs.ws._
-import scala.concurrent.duration._
-import io.circe.syntax._
-import io.circe.generic.auto._
-import org.mdoc.common.model.circe._
+import scodec.bits.ByteVector
 
 case class DocText(body: String)
 
