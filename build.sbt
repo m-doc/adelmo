@@ -24,6 +24,7 @@ lazy val server = project
       "com.vmunier" %% "play-scalajs-scripts" % "0.4.0"
     ),
     maintainer := "m-doc <info@m-doc.org>",
+    serverLoading in Debian := com.typesafe.sbt.packager.archetypes.ServerLoader.SystemV,
     validateCommands --= Seq("coverage", "coverageReport"),
     validateCommands += "debian:packageBin"
   )
