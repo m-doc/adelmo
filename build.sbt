@@ -28,6 +28,8 @@ lazy val server = project
     libraryDependencies ++= Seq(
       ws,
       MdocLibrary.commonModel,
+      Library.circeCore,
+      Library.circeGeneric,
       "com.vmunier" %% "play-scalajs-scripts" % "0.4.0"
     ),
     maintainer := "m-doc <info@m-doc.org>"
