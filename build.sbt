@@ -1,12 +1,3 @@
-lazy val root = project.in(file("."))
-  .enablePlugins(MdocPlugin)
-  .aggregate(client, server)
-  .settings(
-    name := "adelmo",
-    validateCommands --= Seq("coverage", "coverageReport"),
-    validateCommands += "debian:packageBin"
-  )
-
 lazy val client = project
   .enablePlugins(MdocPlugin)
   .enablePlugins(ScalaJSPlugin)
@@ -32,7 +23,9 @@ lazy val server = project
       Library.circeGeneric,
       "com.vmunier" %% "play-scalajs-scripts" % "0.4.0"
     ),
-    maintainer := "m-doc <info@m-doc.org>"
+    maintainer := "m-doc <info@m-doc.org>",
+    validateCommands --= Seq("coverage", "coverageReport"),
+    validateCommands += "debian:packageBin"
   )
 
 // loads the Play project at sbt startup
