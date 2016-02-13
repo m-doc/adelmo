@@ -25,6 +25,10 @@ lazy val server = project
   .settings(
     name := "adelmo-server",
     scalaJSProjects += client,
-    libraryDependencies += "com.vmunier" %% "play-scalajs-scripts" % "0.4.0",
+    libraryDependencies ++= Seq(
+      ws,
+      MdocLibrary.commonModel,
+      "com.vmunier" %% "play-scalajs-scripts" % "0.4.0"
+    ),
     maintainer := "m-doc <info@m-doc.org>"
   )

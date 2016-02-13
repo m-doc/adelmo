@@ -1,4 +1,4 @@
-@()
+@(form: Form[DocText])(implicit messages: Messages)
 
 <!DOCTYPE html>
 <html>
@@ -8,6 +8,10 @@
   <body>
     <h1>TEST</h1>
     <em id="header"></em>
+
+    @helper.form(action = routes.Application.userPost()) {
+      @helper.inputText(form("body"))
+    }
     @playscalajs.html.scripts("adelmo-client")
   </body>
 </html>
