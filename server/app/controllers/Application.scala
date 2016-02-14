@@ -5,7 +5,7 @@ import io.circe.syntax._
 import org.mdoc.common.model._
 import org.mdoc.common.model.circe._
 import org.mdoc.common.model.Format.{ Html, Pdf }
-import org.mdoc.common.model.RenderingEngine.LibreOffice
+import org.mdoc.common.model.RenderingEngine._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.i18n.Messages.Implicits._
@@ -27,7 +27,7 @@ object Application extends Controller {
 
   val userPost = Action.async(parse.form(docTextForm)) { implicit request =>
     val userData = request.body
-    val tmpl = CompleteTemplate(RenderingConfig(Pdf, LibreOffice), Document(Html, ByteVector.apply(userData.body.getBytes)))
+    val tmpl = CompleteTemplate(RenderingConfig(Pdf, Wkhtmltopdf), Document(Html, ByteVector.apply(userData.body.getBytes)))
 
     val wsClient = NingWSClient()
     wsClient.url("http://localhost:8081/render")
