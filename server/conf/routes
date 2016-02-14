@@ -1,3 +1,5 @@
 GET     /               controllers.Application.index
-GET     /assets/*file   controllers.Assets.at(path = "/public", file)
+GET     /version        controllers.Application.version
 POST    /sub            controllers.Application.userPost
+
+GET     /assets/*file   controllers.Assets.at(path = "/public", file)

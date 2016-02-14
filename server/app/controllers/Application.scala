@@ -34,4 +34,8 @@ object Application extends Controller {
       .post(tmpl.asJson.noSpaces)
       .map(res => Ok(res.bodyAsBytes).as(tmpl.cfg.outputFormat.toMediaType.renderString))
   }
+
+  def version = Action {
+    Ok(org.mdoc.adelmo.server.BuildInfo.version)
+  }
 }
