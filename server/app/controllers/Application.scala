@@ -36,6 +36,6 @@ object Application extends Controller {
   }
 
   def version = Action {
-    Ok(org.mdoc.adelmo.server.BuildInfo.version)
+    Ok(org.mdoc.adelmo.BuildInfo.version)
   }
 }
