@@ -27,12 +27,15 @@ object Application extends Controller {
 
   val userPost = Action.async(parse.form(docTextForm)) { implicit request =>
     val userData = request.body
-    val tmpl = CompleteTemplate(RenderingConfig(Pdf, Wkhtmltopdf), Document(Html, ByteVector.apply(userData.body.getBytes)))
+    val tmpl = RenderingInput(
+      JobId(System.currentTimeMillis().toString),
+      RenderingConfig(Pdf, Wkhtmltopdf), Document(Html, ByteVector.apply(userData.body.getBytes))
+    )
 
     val wsClient = NingWSClient()
     wsClient.url("http://localhost:8081/render")
       .post(tmpl.asJson.noSpaces)
-      .map(res => Ok(res.bodyAsBytes).as(tmpl.cfg.outputFormat.toMediaType.renderString))
+      .map(res => Ok(res.bodyAsBytes).as(tmpl.config.outputFormat.toMediaType.renderString))
   }
 
   def version = Action {
