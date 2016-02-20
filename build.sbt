@@ -19,14 +19,15 @@ lazy val server = project
     libraryDependencies ++= Seq(
       ws,
       MdocLibrary.commonModel,
+      Library.bootstrap,
       Library.circeCore,
       Library.circeGeneric,
+      Library.webjarsPlay,
       "com.vmunier" %% "play-scalajs-scripts" % "0.4.0"
     ),
-    maintainer := "m-doc <info@m-doc.org>",
     serverLoading in Debian := com.typesafe.sbt.packager.archetypes.ServerLoader.SystemV,
-    validateCommands --= Seq("coverage", "coverageReport"),
-    validateCommands += "debian:packageBin"
+    mdocValidateCommands --= Seq("coverage", "coverageReport"),
+    mdocValidateCommands += "debian:packageBin"
   )
 
 // loads the Play project at sbt startup
