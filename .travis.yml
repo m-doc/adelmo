@@ -5,10 +5,6 @@ jdk:
 - oraclejdk8
 
 sudo: false
-addons:
-  apt:
-    packages:
-    - graphviz
 
 cache:
   directories:
@@ -21,7 +17,7 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 
 before_deploy:
-- sbt ++$TRAVIS_SCALA_VERSION "project server" mdocPublishDeb
+- sbt ++$TRAVIS_SCALA_VERSION mdocPublishDeb
 deploy:
   provider: bintray
   file: deploy.json
