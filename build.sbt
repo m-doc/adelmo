@@ -1,5 +1,6 @@
 enablePlugins(MdocPlugin)
 enablePlugins(PlayScala)
+enablePlugins(SbtWeb)
 
 name := "adelmo"
 
@@ -9,6 +10,9 @@ libraryDependencies ++= Seq(
   Library.bootstrap,
   Library.circeCore,
   Library.circeGeneric,
+  Library.jquery,
+  Library.react,
+  Library.reactDom,
   Library.webjarsPlay
 )
 

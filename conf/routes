@@ -1,8 +1,11 @@
 GET     /ind            controllers.Application.index
 POST    /sub            controllers.Application.userPost
 
+
 GET     /               controllers.Adelmo.index
 GET     /version        controllers.Adelmo.version
+
+GET     /api/templates  controllers.Api.templates
 
 GET     /assets/*file   controllers.Assets.at(path = "/public", file)
 GET     /webjars/*file  controllers.WebJarAssets.at(file)
