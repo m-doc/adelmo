@@ -3,7 +3,6 @@ package controllers
 import play.api.Play.current
 import play.api.libs.ws.WS
 import play.api.mvc.{ Action, AnyContent, Controller }
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Api extends Controller {
