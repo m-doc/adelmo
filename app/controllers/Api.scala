@@ -13,4 +13,11 @@ object Api extends Controller {
       .fold("")(_ + "/api/template-views")
     WS.url(url).get().map(response => Ok(response.body))
   }
+
+  def placeholders(name: String): Action[AnyContent] = Action.async {
+    val url = current.configuration
+      .getString("adelmo.template-service.url")
+      .fold("")(_ + s"/api/template-placeholders/$name")
+    WS.url(url).get().map(response => Ok(response.body))
+  }
 }

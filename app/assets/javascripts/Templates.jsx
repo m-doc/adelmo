@@ -1,6 +1,6 @@
 var TemplateBox = React.createClass({
   getInitialState: function() {
-    return {data: []};
+    return {data: [], selectedTemplate: ""};
   },
   componentDidMount: function() {
     $.ajax({
@@ -15,11 +15,15 @@ var TemplateBox = React.createClass({
       }.bind(this)
     });
   },
+  updateSelectedTemplateHandler: function(name) {
+    this.setState({selectedTemplate: name});
+  },
   render: function() {
     return (
       <div className="templateBox">
         <strong>Templates</strong>
-        <TemplateList data={this.state.data} />
+        <TemplateList data={this.state.data} updateHandler={this.updateSelectedTemplateHandler} />
+        <TemplateForm selectedTemplate={this.state.selectedTemplate} />
       </div>
     );
   }
@@ -27,25 +31,37 @@ var TemplateBox = React.createClass({
 
 var TemplateList = React.createClass({
   render: function() {
+    var updateHandler = this.props.updateHandler
     var templateNodes = this.props.data.map(function(template) {
       return (
-        <Template name={template.name} />
+        <Template name={template.name} updateHandler={updateHandler} />
       );
     });
     return (
-      <div className="templateList">
+      <ul className="templateList">
         {templateNodes}
-      </div>
+      </ul>
     );
   }
 });
 
 var Template = React.createClass({
+  handleClick: function(event) {
+    this.props.updateHandler(this.props.name);
+  },
   render: function() {
     return (
-      <div className="template">
+      <li className="template" onClick={this.handleClick}>
         {this.props.name}
-      </div>
+      </li>
+    );
+  }
+});
+
+var TemplateForm = React.createClass({
+  render: function() {
+    return (
+      <span>Form {this.props.selectedTemplate}</span>
     );
   }
 });
