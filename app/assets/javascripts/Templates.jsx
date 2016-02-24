@@ -59,9 +59,26 @@ var Template = React.createClass({
 });
 
 var TemplateForm = React.createClass({
+  getInitialState: function() {
+    return {data: []};
+  },
+  xcomponentDidMount: function() {
+    $.ajax({
+      url: "/api/placeholders/" + this.props.selectedTemplate,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
+    if (this.props.selectedTemplate != "") { this.xcomponentDidMount(); }
     return (
-      <span>Form {this.props.selectedTemplate}</span>
+      <span>Form {this.props.selectedTemplate} {this.state.data}</span>
     );
   }
 });
