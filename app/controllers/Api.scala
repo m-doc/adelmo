@@ -8,8 +8,8 @@ import org.mdoc.common.model.Format.{ Html, Pdf }
 import org.mdoc.common.model.RenderingEngine.LibreOffice
 import play.api.Play.current
 import play.api.libs.json.Json
-import play.api.libs.ws.WS
-import play.api.mvc.{ Action, AnyContent, Controller }
+import play.api.libs.ws.{ WS, WSResponse }
+import play.api.mvc.{ Action, AnyContent, Controller, Result }
 import scala.concurrent.ExecutionContext.Implicits.global
 import scodec.bits.ByteVector
 
@@ -19,14 +19,14 @@ object Api extends Controller {
     val url = current.configuration
       .getString("adelmo.template-service.url")
       .fold("")(_ + "/api/template-views")
-    WS.url(url).get().map(response => Ok(response.body))
+    WS.url(url).get().map(toResult)
   }
 
   def placeholders(name: String): Action[AnyContent] = Action.async {
     val url = current.configuration
       .getString("adelmo.template-service.url")
       .fold("")(_ + s"/api/template-placeholders/$name")
-    WS.url(url).get().map(response => Ok(response.body))
+    WS.url(url).get().map(toResult)
   }
 
   def renderTemplate(name: String): Action[AnyContent] = Action.async { req =>
@@ -49,7 +49,13 @@ object Api extends Controller {
       val input = RenderingInput(JobId("123"), RenderingConfig(Pdf, LibreOffice),
         Document(Html, ByteVector.view(response.bodyAsBytes)))
       val json = input.asJson.noSpaces
-      WS.url(rendUrl).post(json).map(r => Ok(r.bodyAsBytes).as(Pdf.toMediaType.renderString))
+      WS.url(rendUrl).post(json).map(toResult)
     }
   }
+
+  def toResult(resp: WSResponse): Result =
+    Ok(resp.bodyAsBytes).as(contentTypeOf(resp))
+
+  def contentTypeOf(resp: WSResponse): String =
+    resp.header("Content-Type").getOrElse("text/plain")
 }
