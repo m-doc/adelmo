@@ -57,5 +57,5 @@ object Api extends Controller {
     Ok(resp.bodyAsBytes).as(contentTypeOf(resp))
 
   def contentTypeOf(resp: WSResponse): String =
-    resp.header("Content-Type").getOrElse("text/plain")
+    resp.header("Content-Type").getOrElse("text/plain; charset=utf-8")
 }
