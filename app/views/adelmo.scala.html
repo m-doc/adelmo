@@ -3,14 +3,21 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>m-doc</title>
+    <style>
+      body {
+        min-height: 2000px;
+        padding-top: 70px;
+      }
+    </style>
     <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))'>
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.fullPath("jquery", "dist/jquery.min.js"))'></script>
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.fullPath("react", "dist/react.min.js"))'></script>
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.fullPath("react-dom", "dist/react-dom.min.js"))'></script>
   </head>
   <body>
-    <!-- navbar -- >
+    <!-- navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -18,9 +25,13 @@
         </div>
       </div>
     </nav>
-    -->
 
-    <div id="templates"></div>
+    <div class="container">
+      <div class="jumbotron">
+        <div id="templates"></div>
+      </div>
+    </div>
+
     <script type='text/javascript' src='@routes.Assets.at("javascripts/Templates.js")'></script>
   </body>
 </html>

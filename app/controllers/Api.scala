@@ -44,7 +44,6 @@ object Api extends Controller {
     val payload = Json.toJson(payload2.mapValues(_.headOption.getOrElse("")))
     println(payload)
 
-    //val payload = req.body.asJson.getOrElse(JsObject.apply(Seq.empty))
     WS.url(tempUrl).post(payload).flatMap { response =>
       println(response.body)
       val input = RenderingInput(JobId("123"), RenderingConfig(Pdf, LibreOffice),
