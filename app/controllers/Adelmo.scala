@@ -1,13 +1,13 @@
 package controllers
 
-import play.api.mvc.{ Action, Controller }
+import play.api.mvc.{ Action, AnyContent, Controller }
 
 object Adelmo extends Controller {
-  def index = Action {
+  def index: Action[AnyContent] = Action {
     Ok(views.html.adelmo())
   }
 
-  def version = Action {
+  def version: Action[AnyContent] = Action {
     Ok(org.mdoc.adelmo.BuildInfo.version)
   }
 }
