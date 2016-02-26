@@ -76,9 +76,21 @@ var TemplateForm = React.createClass({
     });
   },
   render: function() {
+        var inputNodes = this.state.data.map(function(varName) {
+          return (
+            <input type="text" name={varName} placeholder={varName} />
+          );
+        });
+
     if (this.props.selectedTemplate != "") { this.xcomponentDidMount(); }
     return (
-      <span>Form {this.props.selectedTemplate} {this.state.data}</span>
+    <div>
+      <span>Form {this.props.selectedTemplate}</span>
+      <form action={"/api/render/" + this.props.selectedTemplate} method="POST" className="inputForm">
+        {inputNodes}
+        <input type="submit" value="Post" />
+      </form>
+    </div>
     );
   }
 });

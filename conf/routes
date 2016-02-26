@@ -7,6 +7,7 @@ GET     /version        controllers.Adelmo.version
 
 GET     /api/templates  controllers.Api.templates
 GET     /api/placeholders/*name controllers.Api.placeholders(name)
+POST     /api/render/*name controllers.Api.renderTemplate(name)
 
 GET     /assets/*file   controllers.Assets.at(path = "/public", file)
 GET     /webjars/*file  controllers.WebJarAssets.at(file)
