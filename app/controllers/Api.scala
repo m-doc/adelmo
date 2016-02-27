@@ -4,7 +4,7 @@ import io.circe.generic.auto._
 import io.circe.syntax._
 import org.mdoc.common.model._
 import org.mdoc.common.model.circe._
-import org.mdoc.common.model.Format.{ Html, Pdf }
+import org.mdoc.common.model.Format.{ Pdf, Txt }
 import org.mdoc.common.model.RenderingEngine.LibreOffice
 import play.api.Play.current
 import play.api.libs.json.{ Json, JsValue }
@@ -33,11 +33,12 @@ object Api extends Controller {
     val formDataAsJson = formUrlEncodedToJsonMap(formData)
 
     WS.url(processUrl).post(formDataAsJson).flatMap { resp =>
+      val inputFormat = formatFromTemplateName(name).getOrElse(Txt)
       val input = RenderingInput(
         JobId("123"),
         RenderingConfig(Pdf, LibreOffice), // TODO: output format and renderer should be selectable
-        Document(Html, ByteVector.view(resp.bodyAsBytes))
-      ) // TODO: extract input format from name
+        Document(inputFormat, ByteVector.view(resp.bodyAsBytes))
+      )
       val inputAsJson = input.asJson.noSpaces
       WS.url(renderUrl).post(inputAsJson).map(toResult)
     }
@@ -51,6 +52,14 @@ object Api extends Controller {
 
   def formUrlEncodedToJsonMap(map: Map[String, Seq[String]]): JsValue =
     Json.toJson(map.mapValues(_.mkString(" ")))
+
+  def formatFromTemplateName(name: String): Option[Format] = {
+    val parts = name.split('.')
+    val formats = Stream(0, 1).flatMap { i =>
+      parts.dropRight(i).lastOption.flatMap(Format.fromExtension)
+    }
+    formats.headOption
+  }
 
   def toResult(resp: WSResponse): Result =
     Ok(resp.bodyAsBytes).as(contentTypeOf(resp))
