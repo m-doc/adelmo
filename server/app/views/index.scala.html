@@ -16,21 +16,7 @@
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.fullPath("react-dom", "dist/react-dom.min.js"))'></script>
   </head>
   <body>
-    <!-- navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">m-doc</a>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container">
-      <div class="jumbotron">
-        <div id="templates"></div>
-      </div>
-    </div>
-
-    <script type='text/javascript' src='@routes.Assets.at("javascripts/Templates.js")'></script>
+    <div id="root"></div>
+    @playscalajs.html.scripts("adelmo-client")
   </body>
 </html>
