@@ -5,7 +5,9 @@ lazy val client = project
   .settings(
     name := "adelmo-client",
     libraryDependencies ++= Seq(
+      MdocLibrary.commonModel.organization %%% MdocLibrary.commonModel.name % MdocLibrary.commonModel.revision,
       "com.github.japgolly.scalajs-react" %%% "core" % "0.10.4",
+      "be.doeraene" %%% "scalajs-jquery" % "0.9.0",
       "org.scala-js" %%% "scalajs-dom" % "0.8.2"
     ),
     persistLauncher := true,
@@ -19,10 +21,15 @@ lazy val server = project
   .settings(
     name := "adelmo",
     libraryDependencies ++= Seq(
+      ws,
+      MdocLibrary.commonModel,
       Library.bootstrap,
+      Library.circeCore,
+      Library.circeGeneric,
       Library.jquery,
       Library.react,
       Library.reactDom,
+      Library.scodecBits,
       Library.webjarsPlay,
       "com.vmunier" %% "play-scalajs-scripts" % "0.4.0"
     ),
