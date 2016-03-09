@@ -32,11 +32,14 @@ object Api extends Controller {
     val formData = req.body.asFormUrlEncoded.getOrElse(Map.empty)
     val formDataAsJson = formUrlEncodedToJsonMap(formData)
 
+    val format = formData.get("format").map(_.mkString).flatMap(Format.fromExtension).getOrElse(Pdf)
+    val engine = formData.get("engine").map(_.mkString).flatMap(RenderingEngine.fromString).getOrElse(LibreOffice)
+
     WS.url(processUrl).post(formDataAsJson).flatMap { resp =>
       val inputFormat = formatFromTemplateName(name).getOrElse(Txt)
       val input = RenderingInput(
         JobId("123"),
-        RenderingConfig(Pdf, LibreOffice), // TODO: output format and renderer should be selectable
+        RenderingConfig(format, engine),
         Document(inputFormat, ByteVector.view(resp.bodyAsBytes))
       )
       val inputAsJson = input.asJson.noSpaces
