@@ -56,7 +56,7 @@ var Template = React.createClass({
   render: function() {
     return (
       <button type="button" className="list-group-item" onClick={this.handleClick}>
-        {this.props.name}
+        {this.props.name.replace(".mustache", "")}
       </button>
     );
   }
@@ -94,7 +94,7 @@ var TemplateForm = React.createClass({
     return (
       <div className="panel panel-primary">
         <div className="panel-heading">
-          <h3 className="panel-title">{this.props.selectedTemplate}</h3>
+          <h3 className="panel-title">{this.props.selectedTemplate.replace(".mustache", "")}</h3>
         </div>
         <div className="panel-body">
           <form action={"/api/render/" + this.props.selectedTemplate} method="POST" className="inputForm">
@@ -106,7 +106,7 @@ var TemplateForm = React.createClass({
                 <option value="odt">OpenDocument (.odt)</option>
                 <option selected="selected" value="pdf">PDF</option>
                 <option value="png">PNG</option>
-                <option value="txt">Text</option>
+                <option value="txt">Text (.txt)</option>
                 <option value="docx">Word (.docx)</option>
               </select>
             </div>
@@ -114,8 +114,9 @@ var TemplateForm = React.createClass({
               <label for="engine">Engine</label>
               <select id="engine" name="engine" className="form-control">
                 <option value="libreoffice">LibreOffice</option>
-                <option value="wkhtmltopdf">wkhtmltopdf</option>
                 <option value="pandoc">Pandoc</option>
+                <option value="wkhtmltoimage">Wkhtmltoimage</option>
+                <option value="wkhtmltopdf">Wkhtmltopdf</option>
               </select>
             </div>
             <input type="submit" className="btn btn-default" value="Dokument erstellen" />
