@@ -1,6 +1,6 @@
 var TemplateBox = React.createClass({
   getInitialState: function() {
-    return {data: [], selectedTemplate: ""};
+    return {data: [], selectedTemplate: "", placeholders: []};
   },
   componentDidMount: function() {
     $.ajax({
@@ -17,6 +17,20 @@ var TemplateBox = React.createClass({
   },
   updateSelectedTemplateHandler: function(name) {
     this.setState({selectedTemplate: name});
+    this.updatePlaceholders(name);
+  },
+  updatePlaceholders: function(selectedTemplate) {
+    $.ajax({
+        url: "/api/placeholders/" + selectedTemplate,
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+          this.setState({placeholders: data});
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+    });
   },
   render: function() {
     return (
@@ -27,7 +41,8 @@ var TemplateBox = React.createClass({
           </div>
           <TemplateList data={this.state.data} updateHandler={this.updateSelectedTemplateHandler} />
         </div>
-        <TemplateForm selectedTemplate={this.state.selectedTemplate} />
+        <TemplateForm selectedTemplate={this.state.selectedTemplate}
+                      placeholders={this.state.placeholders} />
       </div>
     );
   }
@@ -66,31 +81,18 @@ var TemplateForm = React.createClass({
   getInitialState: function() {
     return {data: []};
   },
-  xcomponentDidMount: function() {
-    $.ajax({
-      url: "/api/placeholders/" + this.props.selectedTemplate,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
   render: function() {
-        var inputNodes = this.state.data.map(function(varName) {
-          return (
-            <div className="form-group">
-              <label for={varName}>{varName}</label>
-              <input type="text" className="form-control" name={varName} id={varName} />
-            </div>
-          );
-        });
+    if (this.props.selectedTemplate == "") { return null; }
 
-    if (this.props.selectedTemplate != "") { this.xcomponentDidMount(); }
-    else { return null; }
+    var inputNodes = this.props.placeholders.map(function(varName) {
+      return (
+        <div className="form-group">
+          <label for={varName}>{varName}</label>
+          <input type="text" className="form-control" name={varName} id={varName} />
+        </div>
+      );
+    });
+
     return (
       <div className="panel panel-primary">
         <div className="panel-heading">
